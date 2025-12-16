@@ -1,3 +1,4 @@
+import { Cartridge } from "./device/Cartridge";
 import { Controller } from "./device/Controller";
 import { Screen } from "./device/Screen";
 import { APU } from "./processor/APU";
@@ -9,7 +10,7 @@ export class NES {
   ppu: PPU;
   apu: APU;
   screen: Screen;
-  cartridge = null;
+  cartridge: Cartridge | null = null;
   controllers: Controller[] = [];
   cycles = 0;
 
@@ -25,7 +26,10 @@ export class NES {
     this.cycles = 0;
   }
 
-  async loadROM(data: Uint8Array) {}
+  async loadROM(data: Uint8Array) {
+    this.cartridge = new Cartridge(data);
+    this.cpu.loadROM(data);
+  }
 
   runFrame() {
     // 每帧执行约29780个CPU周期

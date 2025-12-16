@@ -14,6 +14,13 @@ export class Screen {
   }
 
   render(pixels: Uint8Array) {
-    // 
+    // 渲染像素到Canvas
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        const pixel = pixels[y * this.width + x];
+        this.ctx.fillStyle = `rgb(${pixel * 255}, ${pixel * 255}, ${pixel * 255})`;
+        this.ctx.fillRect(x * this.pixelSize, y * this.pixelSize, this.pixelSize, this.pixelSize);
+      }
+    }
   }
 }
