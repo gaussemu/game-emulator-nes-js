@@ -80,6 +80,9 @@ export class CPU {
 
   constructor() {}
 
+  loadROM(rom: Uint8Array) {
+    this.memory.set(rom, 0x8000);
+  }
   // 56条指令实现
   execute() {
     const opcode = this.readByte(this.PC);
