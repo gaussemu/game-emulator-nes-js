@@ -1,4 +1,5 @@
 import { Controller } from "./device/Controller";
+import { Screen } from "./device/Screen";
 import { APU } from "./processor/APU";
 import { CPU } from "./processor/CPU";
 import { PPU } from "./processor/PPU";
@@ -7,11 +8,15 @@ export class NES {
   cpu: CPU;
   ppu: PPU;
   apu: APU;
+  screen: Screen;
   cartridge = null;
   controllers: Controller[] = [];
   cycles = 0;
 
-  constructor() {
+  constructor(container: HTMLElement) {
+    const $screen = document.createElement("canvas");
+    this.screen = new Screen($screen);
+    container.appendChild($screen);
     this.cpu = new CPU();
     this.ppu = new PPU();
     this.apu = new APU();

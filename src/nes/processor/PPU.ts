@@ -1,13 +1,12 @@
 /**
- * NES的图形处理由理光 2C02 处理器 [ 137 ] 负责，该处理器被称为图像处理单元（PPU），主频为 5.37 MHz。 
+ * NES的图形处理由理光 2C02 处理器 [ 137 ] 负责，该处理器被称为图像处理单元（PPU），主频为 5.37 MHz。
  * 它拥有 2 KB 的视频 VRAM 、256 字节的片上“对象属性存储器”（OAM），用于存储最多 64 个精灵的显示信息，以及 28 字节的 RAM，用于存储基于 YIQ [ 140 ] 调色板的信息；
  * 该游戏机最多可以同时显示 54 种可用颜色中的 25 种。
  */
 export class PPU {
   vram = new Uint8Array(0x4000); // 显存
   palette = new Uint32Array(64); // 调色板
-  screen = new Uint32Array(256 * 240); // 屏幕缓冲
-
+  frameBuffer = new Uint32Array(256 * 240); // 屏幕缓冲
   // 模式表：背景和精灵的图案数据
   patternTables = [
     new Uint8Array(0x1000), // 模式表0
@@ -24,12 +23,10 @@ export class PPU {
   }
 
   renderPixel(x: number, y: number, color: number) {
-    this.screen[y * 256 + x] = color;
+    this.frameBuffer[y * 256 + x] = color;
   }
 
-  render() {
-    
-  }
+  render() {}
 
   // 渲染一条扫描线
   renderScanline(scanline: number) {
@@ -57,5 +54,9 @@ export class PPU {
       // ... 完整的64色
     ];
     return colors[index];
+  }
+
+  getFrameBuffer() {
+    return this.frameBuffer;
   }
 }
